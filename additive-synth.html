@@ -1,0 +1,55 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Additive Synth</title>
+	<style>
+		
+		html,
+		body {
+			height: 100%;
+			margin: 0;
+		}
+
+		div {
+			background-color: black;
+			height: 100%
+		}
+
+	</style>
+</head>
+<body>
+
+	<div tabindex="0" onkeydown="playSynth();"></div>
+
+	<script>
+		var audio_context = window.AudioContext || window.webkitAudioContext;
+
+		var con = new audio_context();
+
+		function playSynth() {
+			var osc = con.createOscillator();
+			var amp = con.createGain();
+			amp.gain.value = 0.05;
+			osc.frequency.value = Math.random() * 500;
+
+			osc.connect(amp);
+
+			var now = con.currentTime;
+			amp.gain.value = 0;
+			amp.gain.linearRampToValueAtTime(0.1, now + 2);
+			amp.gain.linearRampToValueAtTime(0, now + 4);
+
+			osc.type = 'sine';
+
+			amp.connect(con.destination);
+			osc.start();
+
+			osc.stop(now + 4.1);
+		}
+
+	</script>
+</body>
+</html>
+
