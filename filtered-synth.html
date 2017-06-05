@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Filtered synth</title>
+	<style>
+
+		html,
+		body {
+			height: 100%;
+			margin: 0;
+		}
+
+		div {
+			background-color: black;
+			height: 100%;
+		}
+
+	</style>
+</head>
+<body>
+	
+	<div tabindex="1" onkeydown="setNote(event.key);" onmousemove="changeFilter(event.clientX, event.clientY);"></div>
+
+	<script>
+		var audio_context = window.AudioContext || window.webkitAudioContext;
+
+		var con = new audio_context();
+		var osc = con.createOscillator();
+		var filter = con.createBiquadFilter();
+
+		osc.connect(filter);
+		filter.connect(con.destination);
+		//osc.connect(con.destination);
+
+		osc.frequency.value = 600;
+		filter.frequency.value = 100;
+
+
+
+		osc.type = 'sawtooth';
+
+		//osc.start();
+
+		function changeFilter(mx, my) {
+			filter.frequency.value = mx * 10;
+			filter.Q.value = my / 10;
+		}
+
+
+		function setNote(key) {
+			if (key == 'z') {
+				// play a c
+				osc.frequency.value = 261.63;
+			}
+			if (key == 'x') {
+				// play a c
+				osc.frequency.value = 293.66;
+			}
+			if (key == 'c') {
+				// play a e
+				osc.frequency.value = 329.63;
+			}
+			if (key == 'v') {
+				// play a f
+				osc.frequency.value = 349.23;
+			}
+		};
+
+</script>
+</body>
+</html>
